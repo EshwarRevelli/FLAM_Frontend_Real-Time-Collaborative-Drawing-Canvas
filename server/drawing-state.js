@@ -4,7 +4,7 @@ class DrawingState {
   }
 
   ensureRoom(roomId) {
-    if (!this.rooms[roomId]) this.rooms[roomId] = { users: {}, history: [], undone: [] };
+    if(!this.rooms[roomId]) this.rooms[roomId] = { users: {}, history: [], undone: [] };
     return this.rooms[roomId];
   }
 
@@ -15,7 +15,7 @@ class DrawingState {
 
   removeUser(roomId, socketId) {
     const room = this.rooms[roomId];
-    if (room) delete room.users[socketId];
+    if(room) delete room.users[socketId];
   }
 
   addStroke(roomId, op) {
@@ -26,7 +26,7 @@ class DrawingState {
 
   undoLast(roomId) {
     const room = this.ensureRoom(roomId);
-    if (room.history.length === 0) return null;
+    if(room.history.length===0) return null;
     const last = room.history.pop();
     room.undone.push(last);
     return last;
@@ -34,7 +34,7 @@ class DrawingState {
 
   redoLast(roomId) {
     const room = this.ensureRoom(roomId);
-    if (room.undone.length === 0) return null;
+    if(room.undone.length===0) return null;
     const op = room.undone.pop();
     room.history.push(op);
     return op;
@@ -42,15 +42,12 @@ class DrawingState {
 
   getState(roomId) {
     const room = this.ensureRoom(roomId);
-    return {
-      users: room.users,
-      history: room.history,
-    };
+    return { users: room.users, history: room.history };
   }
 
   getUserRoom(socketId) {
-    for (const [roomId, room] of Object.entries(this.rooms)) {
-      if (room.users[socketId]) return roomId;
+    for(const [roomId, room] of Object.entries(this.rooms)){
+      if(room.users[socketId]) return roomId;
     }
     return null;
   }
