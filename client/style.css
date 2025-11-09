@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  display: flex;
+  font-family: sans-serif;
+}
+#tools {
+  width: 250px;
+  padding: 10px;
+  background: #f0f0f0;
+}
+canvas {
+  border: 1px solid #000;
+  flex: 1;
+  cursor: crosshair;
+}
