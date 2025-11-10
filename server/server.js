@@ -15,6 +15,14 @@ io.on('connection', socket => {
   console.log('Client connected:', socket.id);
 
   socket.on('join', ({ room, name }) => {
+    // Leave previous room if exists
+    const oldRoom = drawingState.getUserRoom(socket.id);
+    if(oldRoom && oldRoom !== room) {
+      drawingState.removeUser(oldRoom, socket.id);
+      socket.leave(oldRoom);
+      socket.to(oldRoom).emit('user_left', socket.id);
+    }
+    
     socket.join(room);
     const user = { id: socket.id, name, color: randomColor() };
     drawingState.addUser(room, user);
@@ -57,6 +65,10 @@ io.on('connection', socket => {
     if(!room) return;
     const op = drawingState.redoLast(room);
     if(op) io.in(room).emit('redo', op);
+  });
+
+  socket.on('ping', (data) => {
+    socket.emit('pong', data);
   });
 
   socket.on('disconnect', () => {

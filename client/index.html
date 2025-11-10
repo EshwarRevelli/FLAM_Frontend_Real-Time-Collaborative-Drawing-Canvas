@@ -2,18 +2,90 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Collaborative Canvas</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="tools">
-  <input type="color" id="color" value="#000000"><br><br>
-  Size: <input type="number" id="size" value="4" min="1" max="50"><br><br>
-  <button id="brush">Brush</button>
-  <button id="eraser">Eraser</button>
-  <button id="undo">Undo</button>
-  <button id="redo">Redo</button>
+<button id="mobile-toggle" class="mobile-toggle">☰</button>
+<div id="mobile-overlay" class="mobile-overlay"></div>
+<div id="tools" class="tools-panel">
+  <h2>Tools</h2>
+  
+  <!-- Room Management -->
+  <div class="tool-section">
+    <label>Room</label>
+    <div class="room-controls">
+      <input type="text" id="room-input" placeholder="Room name" value="default">
+      <button id="join-room" class="action-btn">Join Room</button>
+    </div>
+    <div id="current-room" class="room-display">Room: default</div>
+  </div>
+
+  <div class="tool-section">
+    <label for="color">Color</label>
+    <div class="color-picker-wrapper">
+      <input type="color" id="color" value="#000000">
+      <span id="color-display">#000000</span>
+    </div>
+  </div>
+
+  <div class="tool-section">
+    <label for="size">Brush Size: <span id="size-display">4</span></label>
+    <input type="range" id="size" value="4" min="1" max="50" class="slider">
+  </div>
+
+  <div class="tool-section">
+    <label>Drawing Tools</label>
+    <div class="button-group">
+      <button id="brush" class="tool-btn active">🖌️ Brush</button>
+      <button id="eraser" class="tool-btn">🧹 Eraser</button>
+    </div>
+    <div class="button-group">
+      <button id="rectangle" class="tool-btn">▭ Rectangle</button>
+      <button id="circle" class="tool-btn">○ Circle</button>
+    </div>
+  </div>
+
+  <div class="tool-section">
+    <div class="button-group">
+      <button id="undo" class="action-btn">↶ Undo</button>
+      <button id="redo" class="action-btn">↷ Redo</button>
+    </div>
+  </div>
+
+  <div class="tool-section">
+    <div class="button-group">
+      <button id="save" class="action-btn">💾 Save</button>
+      <button id="load" class="action-btn">📂 Load</button>
+    </div>
+    <input type="file" id="load-file" accept=".json" style="display: none;">
+  </div>
+
+  <div class="tool-section">
+    <div id="users-list">
+      <h3>Online Users</h3>
+      <div id="users-container"></div>
+    </div>
+  </div>
 </div>
+
+<!-- Performance Metrics -->
+<div id="metrics" class="metrics-panel">
+  <div class="metric-item">
+    <span class="metric-label">FPS:</span>
+    <span id="fps-display">0</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Latency:</span>
+    <span id="latency-display">0ms</span>
+  </div>
+  <div class="metric-item">
+    <span class="metric-label">Users:</span>
+    <span id="user-count">0</span>
+  </div>
+</div>
+
 <canvas id="canvas"></canvas>
 
 <script src="/socket.io/socket.io.js"></script>
